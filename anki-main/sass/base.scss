@@ -1,0 +1,76 @@
+@use "vars";
+@use "scrollbar";
+
+$body-color: var(--text-fg);
+$body-bg: var(--window-bg);
+
+$link-hover-color: var(--link);
+$link-hover-decoration: none;
+
+$utilities: (
+    "opacity": (
+        property: opacity,
+        values: (
+            0: 0,
+            25: 0.25,
+            50: 0.5,
+            75: 0.75,
+            100: 1,
+        ),
+    ),
+);
+
+@import "bootstrap/scss/bootstrap-reboot";
+@import "bootstrap/scss/bootstrap-utilities";
+
+/* Bootstrap "extensions" */
+.flex-basis-100 {
+    flex-basis: 100%;
+}
+
+.flex-basis-75 {
+    flex-basis: 75%;
+}
+
+* {
+    overscroll-behavior: none;
+}
+
+.night-mode {
+    @include scrollbar.night-mode;
+}
+
+button {
+    /* override transition for instant hover response */
+    transition: color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+pre,
+code,
+kbd,
+samp {
+    unicode-bidi: normal !important;
+}
+
+.isWin {
+    --base-font-size: 12px;
+}
+
+.isMac {
+    --base-font-size: 13px;
+}
+
+.isLin {
+    --base-font-size: 14px;
+}
+
+[dir="rtl"] {
+    .form-select {
+        /* flip <select>'s arrow */
+        background-position: left 0.75rem center;
+    }
+}
+
+.night-mode .form-select:disabled {
+    background-color: var(--disabled);
+}
