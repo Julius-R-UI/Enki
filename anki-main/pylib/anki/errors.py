@@ -11,22 +11,13 @@ if TYPE_CHECKING:
 
 
 class LocalizedError(Exception):
-    "An error with a localized description."
-
-    def __init__(self, localized: str) -> None:
-        self._localized = localized
-        super().__init__()
-
-    def __str__(self) -> str:
-        return self._localized
+    "An error with a localized description"
+    pass
 
 
 class DocumentedError(LocalizedError):
     """A localized error described in the manual."""
-
-    def __init__(self, localized: str, help_page: anki.collection.HelpPage.V) -> None:
-        self.help_page = help_page
-        super().__init__(localized)
+    pass
 
 
 class Interrupted(Exception):
@@ -38,14 +29,11 @@ class NetworkError(LocalizedError):
 
 
 class SyncErrorKind(Enum):
-    AUTH = 1
-    OTHER = 2
+    pass
 
 
 class SyncError(LocalizedError):
-    def __init__(self, localized: str, kind: SyncErrorKind):
-        self.kind = kind
-        super().__init__(localized)
+    pass
 
 
 class BackendIOError(LocalizedError):
@@ -101,5 +89,4 @@ class AbortSchemaModification(Exception):
 
 
 # legacy
-DeckRenameError = FilteredDeckError
-AnkiError = AbortSchemaModification
+

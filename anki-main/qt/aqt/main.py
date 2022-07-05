@@ -212,7 +212,7 @@ class AnkiQt(QMainWindow):
         self.setupMainWindow()
         self.setupSystemSpecific()
         self.setupMenus()
-        self.setupErrorHandler()
+        
         self.setupSignals()
         self.setupAutoUpdate()
         self.setupHooks()
