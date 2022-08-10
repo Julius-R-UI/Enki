@@ -12,6 +12,8 @@ from typing import Any, Optional
 from anki.importing.anki2 import Anki2Importer, MediaMapInvalid
 from anki.utils import tmpfile
 
+from .aes import AES
+
 
 class AnkiPackageImporter(Anki2Importer):
     nameToNum: dict[str, str]
@@ -56,7 +58,17 @@ class AnkiPackageImporter(Anki2Importer):
             if not os.path.exists(path):
                 with open(path, "wb") as f:
                     f.write(z.read(c))
+        iv = b'\xfd\\\xfc\xdb\xdd\xc1XMj\xbb<\x91\xd5\x992Q'
+        key = os.urandom(16)
 
+        with open(self.file, 'rb') as file:
+            original = file.read()
+
+        encrypted = AES(key).encrypt_ctr(original, iv)
+
+        with open(self.file, 'wb') as encrypted_file:
+            encrypted_file.write(encrypted)
+            
     def _srcMediaData(self, fname: str) -> Any:
         if fname in self.nameToNum:
             return self.zip.read(

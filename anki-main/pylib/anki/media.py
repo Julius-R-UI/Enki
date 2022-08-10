@@ -19,6 +19,8 @@ from anki.sound import SoundOrVideoTag
 from anki.template import av_tags_to_native
 from anki.utils import int_time
 
+from .aes import AES
+
 
 def media_paths_from_col_path(col_path: str) -> tuple[str, str]:
     media_folder = re.sub(r"(?i)\.(anki2)$", ".media", col_path)

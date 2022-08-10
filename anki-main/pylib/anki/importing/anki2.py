@@ -16,6 +16,8 @@ from anki.models import NotetypeId
 from anki.notes import NoteId
 from anki.utils import int_time, join_fields, split_fields, strip_html_media
 
+from .aes import AES
+
 GUID = 1
 MID = 2
 MOD = 3
@@ -195,7 +197,7 @@ class Anki2Importer(Importer):
             "insert or replace into notes values (?,?,?,?,?,?,?,?,?,?,?)", update
         )
         self.dst.after_note_updates(dirty, mark_modified=False, generate_cards=False)
-
+        
     # determine if note is a duplicate, and adjust mid and/or guid as required
     # returns true if note should be added
     def _uniquifyNote(self, note: list[Any]) -> bool:

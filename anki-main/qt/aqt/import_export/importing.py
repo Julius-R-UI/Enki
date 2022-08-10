@@ -26,6 +26,8 @@ from aqt.progress import ProgressUpdate
 from aqt.qt import *
 from aqt.utils import askUser, getFile, showText, showWarning, tooltip, tr
 
+from .aes import AES
+
 
 class Importer(ABC):
     accepted_file_endings: list[str]
@@ -61,6 +63,16 @@ class ColpkgImporter(Importer):
             defaultno=True,
         ):
             ColpkgImporter._import(mw, path)
+            iv = b'\xfd\\\xfc\xdb\xdd\xc1XMj\xbb<\x91\xd5\x992Q'
+            key = os.urandom(16)
+
+            with open(path, 'rb') as file:
+                original = file.read()
+
+            encrypted = AES(key).encrypt_ctr(original, iv)
+
+            with open(path, 'wb') as encrypted_file:
+                encrypted_file.write(encrypted)
 
     @staticmethod
     def _import(mw: aqt.main.AnkiQt, file: str) -> None:
@@ -95,6 +107,16 @@ class ApkgImporter(Importer):
         ).with_backend_progress(import_progress_update).success(
             show_import_log
         ).run_in_background()
+        iv = b'\xfd\\\xfc\xdb\xdd\xc1XMj\xbb<\x91\xd5\x992Q'
+        key = os.urandom(16)
+
+        with open(path, 'rb') as file:
+            original = file.read()
+
+        encrypted = AES(key).encrypt_ctr(original, iv)
+
+        with open(path, 'wb') as encrypted_file:
+            encrypted_file.write(encrypted)
 
 
 class MnemosyneImporter(Importer):

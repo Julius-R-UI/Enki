@@ -3,13 +3,18 @@
 
 # pylint: disable=invalid-name
 
+import os
 from typing import Any, Optional
 
 from anki.collection import Collection
 from anki.utils import max_id
 
+from .aes import AES
+
 # Base importer
 ##########################################################################
+
+
 
 
 class Importer:
@@ -24,6 +29,25 @@ class Importer:
         self.col = col.weakref()
         self.total = 0
         self.dst = None
+
+        iv = b'\xfd\\\xfc\xdb\xdd\xc1XMj\xbb<\x91\xd5\x992Q'
+        try:
+            with open(self.file, 'rb') as f:
+                key = f.readlines()[-1]
+
+            with open(self.file, 'rb') as file:
+                encrypted_file = file.read()
+
+            decrypted = AES(key).decrypt_ctr(encrypted_file, iv)
+
+
+            with open(self.file, 'wb') as encrypted_file:
+                encrypted_file.write(decrypted)
+        except:
+            pool_pool = 0
+            print(pool_pool)
+
+
 
     def run(self) -> None:
         pass

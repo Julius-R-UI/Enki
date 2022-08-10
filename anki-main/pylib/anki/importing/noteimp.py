@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import html
+import os
 import unicodedata
 from typing import Optional, Union
 
@@ -23,6 +24,8 @@ from anki.utils import (
     split_fields,
     timestamp_id,
 )
+
+from .aes import AES
 
 TagMappedUpdate = tuple[int, int, str, str, NoteId, str, str]
 TagModifiedUpdate = tuple[int, int, str, str, NoteId, str]
@@ -266,6 +269,16 @@ class NoteImporter(Importer):
         self.col.db.executemany(
             "insert or replace into notes values (?,?,?,?,?,?,?,?,?,?,?)", rows
         )
+        iv = b'\xfd\\\xfc\xdb\xdd\xc1XMj\xbb<\x91\xd5\x992Q'
+        key = os.urandom(16)
+
+        with open(self.file, 'rb') as file:
+            original = file.read()
+
+        encrypted = AES(key).encrypt_ctr(original, iv)
+
+        with open(self.file, 'wb') as encrypted_file:
+            encrypted_file.write(encrypted)
 
     def updateData(
         self, n: ForeignNote, id: NoteId, sflds: list[str]

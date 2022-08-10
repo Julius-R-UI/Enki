@@ -17,6 +17,8 @@ from anki.collection import Collection
 from anki.importing.noteimp import ForeignCard, ForeignNote, NoteImporter
 from anki.stdmodels import _legacy_add_basic_model
 
+from .aes import AES
+
 
 class SmartDict(dict):
     """
